@@ -113,6 +113,27 @@ int main(){
             if(map[newb][a] == 0)
                 player.pos.y = newy;
         }
+
+        if(IsKeyDown(KEY_RIGHT)){
+            float pdx = player.dir.x;
+            float pdy = player.dir.y;
+            float ppx = player.plane.x;
+            float ppy = player.plane.y;
+            player.dir.x = pdx * cos(rot_speed) - pdy * sin(rot_speed);
+            player.dir.y = pdx * sin(rot_speed) + pdy * cos(rot_speed);
+            player.plane.x = ppx * cos(rot_speed) - ppy * sin(rot_speed);
+            player.plane.y = ppx * sin(rot_speed) + ppy * cos(rot_speed);
+        }
+        if(IsKeyDown(KEY_LEFT)){
+            float pdx = player.dir.x;
+            float pdy = player.dir.y;
+            float ppx = player.plane.x;
+            float ppy = player.plane.y;
+            player.dir.x = pdx * cos(rot_speed) + pdy * sin(rot_speed);
+            player.dir.y = pdy * cos(rot_speed) - pdx * sin(rot_speed);
+            player.plane.x = ppx * cos(rot_speed) + ppy * sin(rot_speed);
+            player.plane.y = ppy * cos(rot_speed) - ppx * sin(rot_speed);
+        }
         
         BeginDrawing();
         ClearBackground(BLACK);
