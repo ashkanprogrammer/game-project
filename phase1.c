@@ -34,5 +34,13 @@ int main(){
             else map[i][j] = 0;
         }
     }
+
+    while(!WindowShouldClose()){
+        float dt = GetFrameTime();
+        float base_move_speed = 150.0f;
+        float base_rot_speed = 5.0f;
+        float move_speed = base_move_speed * dt;
+        float rot_speed = base_rot_speed * dt;
+    }
     return 0;
 }
