@@ -55,6 +55,15 @@ int main(){
                 if(a != px || b != py) map[b][a] = 1;
             }
         }
+        if(IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)){
+            int a = GetMouseX();
+            int b = GetMouseY();
+            if(a >= 195 && a <= 1005 && b >= 45 && b <= 855){
+                a = (a - v)/(TILE_SIZE);
+                b = (b - u)/(TILE_SIZE);
+                map[b][a] = 0;
+            }
+        }
     }
     return 0;
 }
