@@ -64,6 +64,18 @@ int main(){
                 map[b][a] = 0;
             }
         }
+
+        BeginDrawing();
+        ClearBackground(BLACK);
+        for(int i = 0; i < 15; i++){
+            for(int j = 0; j < 15; j++){
+                if(map[j][i] == 0) DrawRectangle(v + i * TILE_SIZE, u + j * TILE_SIZE, TILE_SIZE, TILE_SIZE, WHITE);
+                else DrawRectangle(v + i * TILE_SIZE, u + j * TILE_SIZE, TILE_SIZE, TILE_SIZE, cb1);
+                DrawRectangleLines(v + i * TILE_SIZE, u + j * TILE_SIZE, TILE_SIZE, TILE_SIZE, DARKGRAY);
+            }
+        }
+        EndDrawing();
     }
+    CloseWindow();
     return 0;
 }
