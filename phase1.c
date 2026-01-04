@@ -156,7 +156,7 @@ int main(){
         else{
             double screen_width = 1200.0f;
             double screen_height = 900.0f;
-            for(int i = 0; i < 1200; i++){
+            for(int x = 0; x < 1200; x++){
                 double cameraX = (2 * ((double)x / screen_width)) - 1.0f;
                 double raydirX = player.dir.x + player.plane.x * cameraX;
                 double raydirY = player.dir.y + player.plane.y * cameraX;
@@ -176,7 +176,7 @@ int main(){
                     sidedistX = (mapX - posX + 1.0) * deltadistX;
                     stepX = 1;
                 }
-                if(raydiry < 0){
+                if(raydirY < 0){
                     sidedistY = (posY - mapY) * deltadistY;
                     stepY = -1;
                 }
@@ -196,6 +196,28 @@ int main(){
                         side = 1;
                     }
                     if (map[mapY][mapX] == 1) hit = 1;
+                }
+                if(side == 0){
+                    perpWallDist = sidedistX - deltadistX;
+                    int line_height = (screen_height / perpWallDist);
+                    int draw_start = (screen_height / 2) - (line_height / 2);
+                    int draw_end = (screen_height / 2) + (line_height / 2);
+                    if(draw_start < 0) draw_start = 0;
+                    if(draw_end >= screen_height) draw_end = screen_height - 1;
+                    DrawLine(x, 0, x, draw_start, SKYBLUE);
+                    DrawLine(x, draw_start, x, draw_end, GRAY);
+                    DrawLine(x, draw_end, x, screen_height, cb1);
+                }
+                else{
+                    perpWallDist = sidedistY - deltadistY;
+                    int line_height = (screen_height / perpWallDist);
+                    int draw_start = (screen_height / 2) - (line_height / 2);
+                    int draw_end = (screen_height / 2) + (line_height / 2);
+                    if(draw_start < 0) draw_start = 0;
+                    if(draw_end >= screen_height) draw_end = screen_height - 1;
+                    DrawLine(x, 0, x, draw_start, SKYBLUE);
+                    DrawLine(x, draw_start, x, draw_end, DARKGRAY);
+                    DrawLine(x, draw_end, x, screen_height, cb1);
                 }
             }
         }
