@@ -65,6 +65,55 @@ int main(){
             }
         }
 
+        if(IsKeyDown(KEY_W)){
+            float newx = player.pos.x + (player.dir.x * move_speed);
+            float newy = player.pos.y + (player.dir.y * move_speed);
+            int newa = (newx - v)/(TILE_SIZE);
+            int newb = (newy - u)/(TILE_SIZE);
+            int a = (player.pos.x - v)/(TILE_SIZE);
+            int b = (player.pos.y - u)/(TILE_SIZE);
+            if(map[b][newa] == 0)
+                player.pos.x = newx;
+            if(map[newb][a] == 0)
+                player.pos.y = newy;
+        }
+        if(IsKeyDown(KEY_S)){
+            float newx = player.pos.x - (player.dir.x * move_speed);
+            float newy = player.pos.y - (player.dir.y * move_speed);
+            int newa = (newx - v)/(TILE_SIZE);
+            int newb = (newy - u)/(TILE_SIZE);
+            int a = (player.pos.x - v)/(TILE_SIZE);
+            int b = (player.pos.y - u)/(TILE_SIZE);
+            if(map[b][newa] == 0)
+                player.pos.x = newx;
+            if(map[newb][a] == 0)
+                player.pos.y = newy;
+        }
+        if(IsKeyDown(KEY_A)){
+            float newx = player.pos.x + (player.dir.y * move_speed);
+            float newy = player.pos.y - (player.dir.x * move_speed);
+            int newa = (newx - v)/(TILE_SIZE);
+            int newb = (newy - u)/(TILE_SIZE);
+            int a = (player.pos.x - v)/(TILE_SIZE);
+            int b = (player.pos.y - u)/(TILE_SIZE);
+            if(map[b][newa] == 0)
+                player.pos.x = newx;
+            if(map[newb][a] == 0)
+                player.pos.y = newy;
+        }
+        if(IsKeyDown(KEY_D)){
+            float newx = player.pos.x - (player.dir.y * move_speed);
+            float newy = player.pos.y + (player.dir.x * move_speed);
+            int newa = (newx - v)/(TILE_SIZE);
+            int newb = (newy - u)/(TILE_SIZE);
+            int a = (player.pos.x - v)/(TILE_SIZE);
+            int b = (player.pos.y - u)/(TILE_SIZE);
+            if(map[b][newa] == 0)
+                player.pos.x = newx;
+            if(map[newb][a] == 0)
+                player.pos.y = newy;
+        }
+        
         BeginDrawing();
         ClearBackground(BLACK);
         for(int i = 0; i < 15; i++){
