@@ -14,5 +14,6 @@ typedef struct{
 }Player;
 
 int main(){
+    InitWindow(1200, 900, "game window");
     return 0;
 }
