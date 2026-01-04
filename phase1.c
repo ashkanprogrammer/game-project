@@ -25,5 +25,14 @@ int main(){
     player.plane.x = 0.0f;
     player.plane.y = 0.66f;
     SetTargetFPS(60);
+
+    int map[15][15];
+    for(int i = 0; i < 15; i++){
+        for(int j = 0; j < 15; j++){
+            if(i == 0 || i == 14 || j == 0 || j == 14)
+                map[i][j] = 1;
+            else map[i][j] = 0;
+        }
+    }
     return 0;
 }
