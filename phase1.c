@@ -27,6 +27,8 @@ int main(){
     SetTargetFPS(60);
 
     int map[15][15];
+    int u = 45, v = 195;
+    const int TILE_SIZE = 54;
     for(int i = 0; i < 15; i++){
         for(int j = 0; j < 15; j++){
             if(i == 0 || i == 14 || j == 0 || j == 14)
@@ -41,6 +43,18 @@ int main(){
         float base_rot_speed = 5.0f;
         float move_speed = base_move_speed * dt;
         float rot_speed = base_rot_speed * dt;
+
+        if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+            int a = GetMouseX();
+            int b = GetMouseY();
+            int px = (player.pos.x - v)/(TILE_SIZE);
+            int py = (player.pos.y - u)/(TILE_SIZE);
+            if(a >= 195 && a <= 1005 && b >= 45 && b <= 855){
+                a = (a - v)/(TILE_SIZE);
+                b = (b - u)/(TILE_SIZE);
+                if(a != px || b != py) map[b][a] = 1;
+            }
+        }
     }
     return 0;
 }
