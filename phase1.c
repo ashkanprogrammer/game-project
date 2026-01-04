@@ -18,6 +18,8 @@ int main(){
     Color cb1 = {0, 50, 250, 80};
     Color cr1 = {180, 0, 0, 255};
     Player player;
+    float mini_posx = 1075.0f;
+    float mini_posy = 225.0f;
     player.pos.x = 600.0f;
     player.pos.y = 450.0f;
     player.dir.x = 1.0f;
@@ -75,10 +77,14 @@ int main(){
             int newb = (newy - u)/(TILE_SIZE);
             int a = (player.pos.x - v)/(TILE_SIZE);
             int b = (player.pos.y - u)/(TILE_SIZE);
-            if(map[b][newa] == 0)
+            if(map[b][newa] == 0){
                 player.pos.x = newx;
-            if(map[newb][a] == 0)
+                mini_posx = mini_posx + (player.dir.x * move_speed) / 6.0f;
+            }
+            if(map[newb][a] == 0){
                 player.pos.y = newy;
+                mini_posy = mini_posy + (player.dir.y * move_speed) / 6.0f;
+            }
         }
         if(IsKeyDown(KEY_S)){
             float newx = player.pos.x - (player.dir.x * move_speed);
@@ -87,10 +93,14 @@ int main(){
             int newb = (newy - u)/(TILE_SIZE);
             int a = (player.pos.x - v)/(TILE_SIZE);
             int b = (player.pos.y - u)/(TILE_SIZE);
-            if(map[b][newa] == 0)
+            if(map[b][newa] == 0){
                 player.pos.x = newx;
-            if(map[newb][a] == 0)
+                mini_posx = mini_posx - (player.dir.x * move_speed) / 6.0f;
+            }
+            if(map[newb][a] == 0){
                 player.pos.y = newy;
+                mini_posy = mini_posy - (player.dir.y * move_speed) / 6.0f;
+            }
         }
         if(IsKeyDown(KEY_A)){
             float newx = player.pos.x + (player.dir.y * move_speed);
@@ -99,10 +109,14 @@ int main(){
             int newb = (newy - u)/(TILE_SIZE);
             int a = (player.pos.x - v)/(TILE_SIZE);
             int b = (player.pos.y - u)/(TILE_SIZE);
-            if(map[b][newa] == 0)
+            if(map[b][newa] == 0){
                 player.pos.x = newx;
-            if(map[newb][a] == 0)
+                mini_posx = mini_posx + (player.dir.y * move_speed) / 6.0f;
+            }
+            if(map[newb][a] == 0){
                 player.pos.y = newy;
+                mini_posy = mini_posy - (player.dir.x * move_speed) / 6.0f;
+            }
         }
         if(IsKeyDown(KEY_D)){
             float newx = player.pos.x - (player.dir.y * move_speed);
@@ -111,10 +125,14 @@ int main(){
             int newb = (newy - u)/(TILE_SIZE);
             int a = (player.pos.x - v)/(TILE_SIZE);
             int b = (player.pos.y - u)/(TILE_SIZE);
-            if(map[b][newa] == 0)
+            if(map[b][newa] == 0){
                 player.pos.x = newx;
-            if(map[newb][a] == 0)
+                mini_posx = mini_posx - (player.dir.y * move_speed) / 6.0f;
+            }
+            if(map[newb][a] == 0){
                 player.pos.y = newy;
+                mini_posy = mini_posy + (player.dir.x * move_speed) / 6.0f;
+            }
         }
 
         if(IsKeyDown(KEY_RIGHT)){
@@ -220,6 +238,20 @@ int main(){
                     DrawLine(x, draw_end, x, screen_height, cb1);
                 }
             }
+            const int MINI_TILE = 10;
+            int mu = 150, mv = 1000;
+            for(int i = 0; i < 15; i++){
+                for(int j = 0; j < 15; j++){
+                    if(map[j][i] == 0)
+                        DrawRectangle(mv + i * MINI_TILE, mu + j * MINI_TILE, MINI_TILE, MINI_TILE, WHITE);
+                    else DrawRectangle(mv + i * MINI_TILE, mu + j * MINI_TILE, MINI_TILE, MINI_TILE, cb1);
+                    DrawRectangleLines(mv + i * MINI_TILE, mu + j * MINI_TILE, MINI_TILE, MINI_TILE, DARKGRAY);
+                }
+            }
+            float xe = 10.0f * player.dir.x;
+            float ye = 10.0f * player.dir.y;
+            DrawCircle(mini_posx, mini_posy, 4, cr1);
+            DrawLine(mini_posx, mini_posy, mini_posx + xe, mini_posy + ye, cr1);
         }
         EndDrawing();
     }
