@@ -153,6 +153,23 @@ int main(){
             DrawCircle(player.pos.x, player.pos.y, 18, cr1);
             DrawLine(player.pos.x, player.pos.y, player.pos.x + xe, player.pos.y + ye, cr1);
         }
+        else{
+            double screen_width = 1200.0f;
+            double screen_height = 900.0f;
+            for(int i = 0; i < 1200; i++){
+                double cameraX = (2 * ((double)x / screen_width)) - 1.0f;
+                double raydirX = player.dir.x + player.plane.x * cameraX;
+                double raydirY = player.dir.y + player.plane.y * cameraX;
+                double posX = (player.pos.x - v)/(double)(TILE_SIZE);
+                double posY = (player.pos.y - u)/(double)(TILE_SIZE);
+                int mapX = (player.pos.x - v)/(TILE_SIZE);
+                int mapY = (player.pos.y - u)/(TILE_SIZE);
+                double sidedistX, sidedistY, perpWallDist;
+                double deltadistX = (raydirX == 0) ? 1e30 : fabs(1 / raydirX);
+                double deltadistY = (raydirY == 0) ? 1e30 : fabs(1 / raydirY);
+                int stepX, stepY, side, hit = 0;
+            }
+        }
         EndDrawing();
     }
     CloseWindow();
