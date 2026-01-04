@@ -18,6 +18,8 @@ int main(){
     Color cb1 = {0, 50, 250, 80};
     Color cr1 = {180, 0, 0, 255};
     Player player;
+    float mini_posx = 1075.0f;
+    float mini_posy = 225.0f;
     player.pos.x = 600.0f;
     player.pos.y = 450.0f;
     player.dir.x = 1.0f;
@@ -37,6 +39,7 @@ int main(){
         }
     }
 
+    int game_state = 1;
     while(!WindowShouldClose()){
         float dt = GetFrameTime();
         float base_move_speed = 150.0f;
@@ -44,24 +47,26 @@ int main(){
         float move_speed = base_move_speed * dt;
         float rot_speed = base_rot_speed * dt;
 
-        if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
-            int a = GetMouseX();
-            int b = GetMouseY();
-            int px = (player.pos.x - v)/(TILE_SIZE);
-            int py = (player.pos.y - u)/(TILE_SIZE);
-            if(a >= 195 && a <= 1005 && b >= 45 && b <= 855){
-                a = (a - v)/(TILE_SIZE);
-                b = (b - u)/(TILE_SIZE);
-                if(a != px || b != py) map[b][a] = 1;
+        if(game_state == 0){
+            if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
+                int a = GetMouseX();
+                int b = GetMouseY();
+                int px = (player.pos.x - v)/(TILE_SIZE);
+                int py = (player.pos.y - u)/(TILE_SIZE);
+                if(a >= 195 && a <= 1005 && b >= 45 && b <= 855){
+                    a = (a - v)/(TILE_SIZE);
+                    b = (b - u)/(TILE_SIZE);
+                    if(a != px || b != py) map[b][a] = 1;
+                }
             }
-        }
-        if(IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)){
-            int a = GetMouseX();
-            int b = GetMouseY();
-            if(a >= 195 && a <= 1005 && b >= 45 && b <= 855){
-                a = (a - v)/(TILE_SIZE);
-                b = (b - u)/(TILE_SIZE);
-                map[b][a] = 0;
+            if(IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)){
+                int a = GetMouseX();
+                int b = GetMouseY();
+                if(a >= 195 && a <= 1005 && b >= 45 && b <= 855){
+                    a = (a - v)/(TILE_SIZE);
+                    b = (b - u)/(TILE_SIZE);
+                    map[b][a] = 0;
+                }
             }
         }
 
@@ -72,10 +77,14 @@ int main(){
             int newb = (newy - u)/(TILE_SIZE);
             int a = (player.pos.x - v)/(TILE_SIZE);
             int b = (player.pos.y - u)/(TILE_SIZE);
-            if(map[b][newa] == 0)
+            if(map[b][newa] == 0){
                 player.pos.x = newx;
-            if(map[newb][a] == 0)
+                mini_posx = mini_posx + (player.dir.x * move_speed) / 6.0f;
+            }
+            if(map[newb][a] == 0){
                 player.pos.y = newy;
+                mini_posy = mini_posy + (player.dir.y * move_speed) / 6.0f;
+            }
         }
         if(IsKeyDown(KEY_S)){
             float newx = player.pos.x - (player.dir.x * move_speed);
@@ -84,10 +93,14 @@ int main(){
             int newb = (newy - u)/(TILE_SIZE);
             int a = (player.pos.x - v)/(TILE_SIZE);
             int b = (player.pos.y - u)/(TILE_SIZE);
-            if(map[b][newa] == 0)
+            if(map[b][newa] == 0){
                 player.pos.x = newx;
-            if(map[newb][a] == 0)
+                mini_posx = mini_posx - (player.dir.x * move_speed) / 6.0f;
+            }
+            if(map[newb][a] == 0){
                 player.pos.y = newy;
+                mini_posy = mini_posy - (player.dir.y * move_speed) / 6.0f;
+            }
         }
         if(IsKeyDown(KEY_A)){
             float newx = player.pos.x + (player.dir.y * move_speed);
@@ -96,10 +109,14 @@ int main(){
             int newb = (newy - u)/(TILE_SIZE);
             int a = (player.pos.x - v)/(TILE_SIZE);
             int b = (player.pos.y - u)/(TILE_SIZE);
-            if(map[b][newa] == 0)
+            if(map[b][newa] == 0){
                 player.pos.x = newx;
-            if(map[newb][a] == 0)
+                mini_posx = mini_posx + (player.dir.y * move_speed) / 6.0f;
+            }
+            if(map[newb][a] == 0){
                 player.pos.y = newy;
+                mini_posy = mini_posy - (player.dir.x * move_speed) / 6.0f;
+            }
         }
         if(IsKeyDown(KEY_D)){
             float newx = player.pos.x - (player.dir.y * move_speed);
@@ -108,10 +125,14 @@ int main(){
             int newb = (newy - u)/(TILE_SIZE);
             int a = (player.pos.x - v)/(TILE_SIZE);
             int b = (player.pos.y - u)/(TILE_SIZE);
-            if(map[b][newa] == 0)
+            if(map[b][newa] == 0){
                 player.pos.x = newx;
-            if(map[newb][a] == 0)
+                mini_posx = mini_posx - (player.dir.y * move_speed) / 6.0f;
+            }
+            if(map[newb][a] == 0){
                 player.pos.y = newy;
+                mini_posy = mini_posy + (player.dir.x * move_speed) / 6.0f;
+            }
         }
 
         if(IsKeyDown(KEY_RIGHT)){
@@ -134,20 +155,104 @@ int main(){
             player.plane.x = ppx * cos(rot_speed) + ppy * sin(rot_speed);
             player.plane.y = ppy * cos(rot_speed) - ppx * sin(rot_speed);
         }
-        
+
         BeginDrawing();
         ClearBackground(BLACK);
-        for(int i = 0; i < 15; i++){
-            for(int j = 0; j < 15; j++){
-                if(map[j][i] == 0) DrawRectangle(v + i * TILE_SIZE, u + j * TILE_SIZE, TILE_SIZE, TILE_SIZE, WHITE);
-                else DrawRectangle(v + i * TILE_SIZE, u + j * TILE_SIZE, TILE_SIZE, TILE_SIZE, cb1);
-                DrawRectangleLines(v + i * TILE_SIZE, u + j * TILE_SIZE, TILE_SIZE, TILE_SIZE, DARKGRAY);
+        if(game_state == 0){
+            for(int i = 0; i < 15; i++){
+                for(int j = 0; j < 15; j++){
+                    if(map[j][i] == 0) DrawRectangle(v + i * TILE_SIZE, u + j * TILE_SIZE, TILE_SIZE, TILE_SIZE, WHITE);
+                    else DrawRectangle(v + i * TILE_SIZE, u + j * TILE_SIZE, TILE_SIZE, TILE_SIZE, cb1);
+                    DrawRectangleLines(v + i * TILE_SIZE, u + j * TILE_SIZE, TILE_SIZE, TILE_SIZE, DARKGRAY);
+                }
             }
+            float xe = 60.0f * player.dir.x;
+            float ye = 60.0f * player.dir.y;
+            DrawCircle(player.pos.x, player.pos.y, 18, cr1);
+            DrawLine(player.pos.x, player.pos.y, player.pos.x + xe, player.pos.y + ye, cr1);
         }
-        float xe = 60.0f * player.dir.x;
-        float ye = 60.0f * player.dir.y;
-        DrawCircle(player.pos.x, player.pos.y, 18, cr1);
-        DrawLine(player.pos.x, player.pos.y, player.pos.x + xe, player.pos.y + ye, cr1);
+        else{
+            double screen_width = 1200.0f;
+            double screen_height = 900.0f;
+            for(int x = 0; x < 1200; x++){
+                double cameraX = (2 * ((double)x / screen_width)) - 1.0f;
+                double raydirX = player.dir.x + player.plane.x * cameraX;
+                double raydirY = player.dir.y + player.plane.y * cameraX;
+                double posX = (player.pos.x - v)/(double)(TILE_SIZE);
+                double posY = (player.pos.y - u)/(double)(TILE_SIZE);
+                int mapX = (player.pos.x - v)/(TILE_SIZE);
+                int mapY = (player.pos.y - u)/(TILE_SIZE);
+                double sidedistX, sidedistY, perpWallDist;
+                double deltadistX = (raydirX == 0) ? 1e30 : fabs(1 / raydirX);
+                double deltadistY = (raydirY == 0) ? 1e30 : fabs(1 / raydirY);
+                int stepX, stepY, side, hit = 0;
+                if(raydirX < 0){
+                    sidedistX = (posX - mapX) * deltadistX;
+                    stepX = -1;
+                }
+                else{
+                    sidedistX = (mapX - posX + 1.0) * deltadistX;
+                    stepX = 1;
+                }
+                if(raydirY < 0){
+                    sidedistY = (posY - mapY) * deltadistY;
+                    stepY = -1;
+                }
+                else{
+                    sidedistY = (mapY - posY + 1.0) * deltadistY;
+                    stepY = 1;
+                }
+                while (hit == 0){
+                    if (sidedistX < sidedistY){
+                        sidedistX += deltadistX;
+                        mapX += stepX;
+                        side = 0;
+                    }
+                    else{
+                        sidedistY += deltadistY;
+                        mapY += stepY;
+                        side = 1;
+                    }
+                    if (map[mapY][mapX] == 1) hit = 1;
+                }
+                if(side == 0){
+                    perpWallDist = sidedistX - deltadistX;
+                    int line_height = (screen_height / perpWallDist);
+                    int draw_start = (screen_height / 2) - (line_height / 2);
+                    int draw_end = (screen_height / 2) + (line_height / 2);
+                    if(draw_start < 0) draw_start = 0;
+                    if(draw_end >= screen_height) draw_end = screen_height - 1;
+                    DrawLine(x, 0, x, draw_start, SKYBLUE);
+                    DrawLine(x, draw_start, x, draw_end, GRAY);
+                    DrawLine(x, draw_end, x, screen_height, cb1);
+                }
+                else{
+                    perpWallDist = sidedistY - deltadistY;
+                    int line_height = (screen_height / perpWallDist);
+                    int draw_start = (screen_height / 2) - (line_height / 2);
+                    int draw_end = (screen_height / 2) + (line_height / 2);
+                    if(draw_start < 0) draw_start = 0;
+                    if(draw_end >= screen_height) draw_end = screen_height - 1;
+                    DrawLine(x, 0, x, draw_start, SKYBLUE);
+                    DrawLine(x, draw_start, x, draw_end, DARKGRAY);
+                    DrawLine(x, draw_end, x, screen_height, cb1);
+                }
+            }
+            const int MINI_TILE = 10;
+            int mu = 150, mv = 1000;
+            for(int i = 0; i < 15; i++){
+                for(int j = 0; j < 15; j++){
+                    if(map[j][i] == 0)
+                        DrawRectangle(mv + i * MINI_TILE, mu + j * MINI_TILE, MINI_TILE, MINI_TILE, WHITE);
+                    else DrawRectangle(mv + i * MINI_TILE, mu + j * MINI_TILE, MINI_TILE, MINI_TILE, cb1);
+                    DrawRectangleLines(mv + i * MINI_TILE, mu + j * MINI_TILE, MINI_TILE, MINI_TILE, DARKGRAY);
+                }
+            }
+            float xe = 10.0f * player.dir.x;
+            float ye = 10.0f * player.dir.y;
+            DrawCircle(mini_posx, mini_posy, 4, cr1);
+            DrawLine(mini_posx, mini_posy, mini_posx + xe, mini_posy + ye, cr1);
+        }
         EndDrawing();
     }
     CloseWindow();
