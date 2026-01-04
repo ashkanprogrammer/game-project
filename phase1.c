@@ -74,6 +74,10 @@ int main(){
                 DrawRectangleLines(v + i * TILE_SIZE, u + j * TILE_SIZE, TILE_SIZE, TILE_SIZE, DARKGRAY);
             }
         }
+        float xe = 60.0f * player.dir.x;
+        float ye = 60.0f * player.dir.y;
+        DrawCircle(player.pos.x, player.pos.y, 18, cr1);
+        DrawLine(player.pos.x, player.pos.y, player.pos.x + xe, player.pos.y + ye, cr1);
         EndDrawing();
     }
     CloseWindow();
