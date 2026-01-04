@@ -168,6 +168,35 @@ int main(){
                 double deltadistX = (raydirX == 0) ? 1e30 : fabs(1 / raydirX);
                 double deltadistY = (raydirY == 0) ? 1e30 : fabs(1 / raydirY);
                 int stepX, stepY, side, hit = 0;
+                if(raydirX < 0){
+                    sidedistX = (posX - mapX) * deltadistX;
+                    stepX = -1;
+                }
+                else{
+                    sidedistX = (mapX - posX + 1.0) * deltadistX;
+                    stepX = 1;
+                }
+                if(raydiry < 0){
+                    sidedistY = (posY - mapY) * deltadistY;
+                    stepY = -1;
+                }
+                else{
+                    sidedistY = (mapY - posY + 1.0) * deltadistY;
+                    stepY = 1;
+                }
+                while (hit == 0){
+                    if (sidedistX < sidedistY){
+                        sidedistX += deltadistX;
+                        mapX += stepX;
+                        side = 0;
+                    }
+                    else{
+                        sidedistY += deltadistY;
+                        mapY += stepY;
+                        side = 1;
+                    }
+                    if (map[mapY][mapX] == 1) hit = 1;
+                }
             }
         }
         EndDrawing();
